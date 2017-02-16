@@ -1,5 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
- 
+import { ReactiveDict } from 'meteor/reactive-dict';
 import { Tasks } from '../api/tasks.js';
  
 import './task.js'
@@ -7,6 +8,7 @@ import './body.html';
 
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
+  Meteor.subscribe('tasks');
 });
  
 Template.body.helpers({
@@ -37,12 +39,15 @@ Template.body.events({
 
  
     // Insert a task into the collection
-    Tasks.insert({
+    const newTask = {
       todo: todo,
       outcome: outcome,
       desire: desire,
+      owner: Meteor.userId(),
       createdAt: new Date(), // current time
-    });
+    };
+
+    Meteor.call('tasks.insert', newTask);
  
     // Clear form
     target.todo.value = '';

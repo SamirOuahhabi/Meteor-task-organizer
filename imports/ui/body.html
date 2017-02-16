@@ -6,12 +6,15 @@
         <input type="checkbox" />
         Hide Completed Tasks
       </label>
+      {{> loginButtons}}
+      {{#if currentUser}}
       <form class="new-task">
         <input type="text" name="todo" placeholder="Next task" />
         <input type="text" name="outcome" placeholder="Outcome, goal..." />
         <input type="text" name="desire" placeholder="Desire, reason for the goal." />
         <input type="submit" value="Submit" />
       </form>
+      {{/if}}
     </header>
  
     <ul>
