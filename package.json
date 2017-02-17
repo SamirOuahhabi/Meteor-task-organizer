@@ -1,5 +1,5 @@
 {
-  "name": "Task Organizer",
+  "name": "todos",
   "private": true,
   "scripts": {
     "start": "meteor run"

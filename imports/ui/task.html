@@ -1,11 +1,19 @@
 <template name="task">
-  <li class="{{#if checked}}checked{{/if}}">
-    <button class="delete">&times;</button>
- 
-    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
- 
-    <span class="task">"{{todo}}"</span>:&nbsp;
-    <span class="task">{{outcome}}</span>,
-    <span class="task">{{desire}}</span>
-  </li>
+	<div class="card">
+		<div class="card-content {{#if checked}}green lighten-3{{else}}red lighten-4{{/if}}">
+			<p><b>Description:</b> {{todo}}</p>
+			<p><b>Outcome:</b> {{outcome}}</p>
+			<p><b>Desire:</b> {{desire}}</p>
+		</div>
+		<div class="card-action teal lighten-5">        	
+			<a href="#" class="toggle-checked">
+				{{#if checked}}
+				Mark undone
+				{{else}}
+				Mark done
+				{{/if}}
+			</a>
+			<a href="#" class="delete">Delete</a>
+		</div>
+	</div>
 </template>

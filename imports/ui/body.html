@@ -1,26 +1,40 @@
 <body>
   <div class="container">
-    <header>
-      <h1>Todo List ({{incompleteCount}})</h1>
-      <label class="hide-completed">
-        <input type="checkbox" />
-        Hide Completed Tasks
-      </label>
-      {{> loginButtons}}
-      {{#if currentUser}}
-      <form class="new-task">
-        <input type="text" name="todo" placeholder="Next task" />
-        <input type="text" name="outcome" placeholder="Outcome, goal..." />
-        <input type="text" name="desire" placeholder="Desire, reason for the goal." />
-        <input type="submit" value="Submit" />
-      </form>
-      {{/if}}
-    </header>
- 
-    <ul>
-      {{#each tasks}}
-        {{> task}}
-      {{/each}}
+    <div class="row">
+     <ul id="dropdown1" class="dropdown-content">
+      <li><a href="#" class="hide-completed">{{#if hideCompleted}}Show completed{{else}}Hide completed{{/if}}</a></li>
     </ul>
+    <nav>
+      <div class="nav-wrapper teal">
+        <a href="/" class="brand-logo">Task Organizer</a>
+        <ul class="right hide-on-med-and-down">
+          <li>{{> loginButtons}}</li>
+          <li><a href="#" class="new-task">New Task<i class="material-icons right">add</i></a></li>
+          <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Settings<i class="material-icons right">settings</i></a></li>
+        </ul>
+      </div>
+    </nav>
+    </div>
+    <div class="row">
+    {{#if currentUser}}
+    <form class="new-task-form" hidden>
+      <input type="text" name="todo" placeholder="Next task" />
+      <input type="text" name="outcome" placeholder="Outcome, goal..." />
+      <input type="text" name="desire" placeholder="Desire, reason for the goal." />
+      <a class="waves-effect waves-light btn"><i class="material-icons left">add</i>Create Task</a>
+    </form>
+    {{else}}
+    <p class="new-task-form" hidden>
+      Please log in!
+    </p>
+    {{/if}}
   </div>
+  <div class="row">
+    {{#each tasks}}
+    <div class="col s12 m6 l4">
+      {{> task}}
+    </div>
+    {{/each}}
+  </div>
+</div>
 </body>
