@@ -1,5 +1,7 @@
+import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
- 
+import { check } from 'meteor/check';
+
 export const Tasks = new Mongo.Collection('tasks');
 
 if (Meteor.isServer) {
@@ -15,20 +17,27 @@ Meteor.methods({
     check(task.todo, String);
     check(task.outcome, String);
     check(task.desire, String);
- 
+
+    if(task.todo.length*task.outcome.length*task.desire.length===0)
+    {
+        throw new Meteor.Error('empty-fields');
+    }
+
     // Make sure the user is logged in before inserting a task
     if (! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
- 
+
     Tasks.insert({
       todo: task.todo,
       outcome: task.outcome,
       desire: task.desire,
       userId: this.userId,
       createdAt: new Date(), // current time
+    }, function(error, id) {
+      if(error)
+        throw new Meteor.Error(error);
     });
-
   },
   'tasks.remove'(taskId) {
     check(taskId, String);

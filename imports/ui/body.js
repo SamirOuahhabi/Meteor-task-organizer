@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating';
- 
+
 import { Tasks } from '../api/tasks.js';
  
 import './task.js'
@@ -7,6 +7,11 @@ import './body.html';
 
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
+  Meteor.subscribe('tasks');
+});
+
+Template.body.onRendered(function bodyOnRendered() {
+  $(".button-collapse").sideNav();
 });
  
 Template.body.helpers({
@@ -29,7 +34,7 @@ Template.body.helpers({
 });
 
 Template.body.events({
-  'submit .new-task-form'(event) {
+  'submit #new-task-form'(event) {
     // Prevent default browser form submit
     event.preventDefault();
     // Get value from form element
@@ -38,13 +43,18 @@ Template.body.events({
     const outcome = target.outcome.value;
     const desire = target.desire.value;
 
- 
-    // Insert a task into the collection
-    Tasks.insert({
+    const newTask = {
       todo: todo,
       outcome: outcome,
-      desire: desire,
-      createdAt: new Date(), // current time
+      desire: desire
+    };
+
+    // Insert a task into the collection
+    Meteor.call('tasks.insert', newTask, function(error) {
+      if(error)
+        Materialize.toast('Error: '+error.error, 4000);
+      else
+        Materialize.toast('Task successfully inserted', 4000);
     });
  
     // Clear form
@@ -55,10 +65,10 @@ Template.body.events({
   'click .hide-completed'(event) {
     const instance = Template.instance();
     instance.state.set('hideCompleted', !instance.state.get('hideCompleted'));
-    console.log(this);
   },
   'click .new-task'(event){
     const instance = Template.instance();
-    instance.$('.new-task-form').toggle();
+    instance.$('#new-task-div').show();
+    instance.$('.button-collapse').sideNav('hide');
   }
 });
